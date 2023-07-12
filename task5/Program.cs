@@ -55,7 +55,18 @@ int[,] FullArray(int row, int col)
         startCol++;
         endCol--;
         endRow--;
-        if (row == col && startCol == endCol) matrix[startCol, endCol] = row * col;
+        if (row == col && startCol == endCol)
+        {
+            matrix[startCol, endCol] = row * col;
+        }
+        if (row < col && startCol == endCol)
+        {
+            matrix[startRow -= 1, startCol] = row * col - 1;
+        }
+        if (row > col && startCol == endCol)
+        {
+            matrix[startRow, endCol] = row * col - 2; counter++; startRow++;
+        }
     }
     return matrix;
 }
