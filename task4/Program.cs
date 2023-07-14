@@ -11,7 +11,8 @@ void main()
     int X = ReadInt("Введите X : ");
     int Y = ReadInt("Введите Y : ");
     int Z = ReadInt("Введите Z : ");
-    int[,,] matrix = FullArray(X, Y, Z);
+    int[,,] matrix = new int[X, Y, Z];
+    FullArray(matrix);
     PrintMatrix(matrix);
 }
 
@@ -21,45 +22,59 @@ int ReadInt(string text)
     return Convert.ToInt32(Console.ReadLine());
 }
 
-int[,,] FullArray(int X = 5, int Y = 5, int Z = 5, int leftRange = 10, int rightRange = 99)
+void FullArray(int[,,] matrix, int leftRange = 10, int rightRange = 99)
 {
-    int[,,] tempMatrix = new int[X, Y, Z];
-    Random rand = new Random();
-    int n = 10;
-    for (int i = 0; i < X; i++)
+    if (matrix.Length > 90)
     {
-        for (int j = 0; j < Y; j++)
+        System.Console.WriteLine("Данный массив невозможно сгенерировать неповторяющимися двухзначными числами ");
+        return;
+    }
+    else
+    {
+        Random rand = new Random();
+        int[] array = new int[90];
+        int num = 10;
+        for (int i = 0; i < array.Length; i++)
         {
-            for (int k = 0; k < Z; k++)
+            array[i] = num;
+            num++;
+        }
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            for (int j = 0; j < matrix.GetLength(1); j++)
             {
-                tempMatrix[i, j, k] = n;
-                n++;
-                int t= rand.Next(j+1);
-                var temp = tempMatrix[i,t,k];
-                tempMatrix[i,t,k]=tempMatrix[i,j,k];
-                tempMatrix[i,j,k]= temp;
+                for (int k = 0; k < matrix.GetLength(2); k++)
+                {
+                    num = array[rand.Next(array.Length)];
+                    matrix[i, j, k] = num;
+                    int Index = Array.IndexOf(array, num);
+                    array = array.Where((v, i) => i != Index).ToArray();
+                }
             }
         }
+        return;
     }
-    return tempMatrix;
 }
 
 void PrintMatrix(int[,,] matrix)
 {
-    for (int i = 0; i < matrix.GetLength(0); i++)
+    if (matrix.Length > 90)
     {
-        for (int j = 0; j < matrix.GetLength(1); j++)
-        {
-            for (int k = 0; k < matrix.GetLength(2); k++)
-            {
-                System.Console.Write($"{matrix[i, j, k]}({i},{j},{k})\t");
-            }
-            System.Console.WriteLine();
-        }
+        return;
     }
-        if(matrix.Length>99)
+    else
     {
-     System.Console.WriteLine("Данный массив невозможно сгенерировать неповторяющимися двухзначными числами ");
+        for (int i = 0; i < matrix.GetLength(0); i++)
+        {
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                for (int k = 0; k < matrix.GetLength(2); k++)
+                {
+                    System.Console.Write($"{matrix[i, j, k]}({i},{j},{k})\t");
+                }
+                System.Console.WriteLine();
+            }
+        }
     }
 }
 main();
